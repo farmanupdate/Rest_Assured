@@ -70,8 +70,6 @@
 	    <version>6.9.0</version>
 	</dependency>
 	
-	
- 
   </dependencies>
   
   <build>
