@@ -36,129 +36,129 @@ public class restAssuredclass {
 	  RestAssured.basePath = "/v2";
 	  
   }
-  
-  @DataProvider
-  public Object[][] getDatausingDataProvider() {
-		 
-		 Object[][] TestData = new Object[][] { 
-			
-			 				   new Object[] {4, 5, "TestCategory","TestString", "www.google.com","www.ust.com","www.pst.com",11,"testing",12,"resting","available" },
-			 				  new Object[] {14, 15, "TestCategory","TestString", "www.google.com","www.ust.com","www.pst.com",14,"testing",15,"resting","available" }};
-		 return TestData;
-	 }
-		 
-	@Test(dataProvider = "getDatausingDataProvider")
-	public void createPetwithDataProvider(int petId, int cId, String cName, String Name, String p1, String p2, String p3, int tId, String tName, int t1_Id, String t1_Name, String Status ) {
-		
-		Category c = new Category(cId,cName);
-		Tags t = new Tags(tId,tName);
-		Tags t1 = new Tags(t1_Id, t1_Name);
-		String[] ph = new String[] {p1,p2,p3}; //Tag is giving an error ask aman how to resolve
-		Tags[] tg = new Tags[] {t,t1};
-		Pet pt = new Pet(petId,c,Name,ph,tg,Status);
-		
-		request = RestAssured.given().log().all().contentType(ContentType.JSON).body(pt);
-		request.log().all();
-		
-		Response res = request.post("/pet");
-		res.then().log().all();
-		
-		
-	}
+//  
+//  @DataProvider
+//  public Object[][] getDatausingDataProvider() {
+//		 
+//		 Object[][] TestData = new Object[][] { 
+//			
+//			 				   new Object[] {4, 5, "TestCategory","TestString", "www.google.com","www.ust.com","www.pst.com",11,"testing",12,"resting","available" },
+//			 				  new Object[] {14, 15, "TestCategory","TestString", "www.google.com","www.ust.com","www.pst.com",14,"testing",15,"resting","available" }};
+//		 return TestData;
+//	 }
+//		 
+//	@Test(dataProvider = "getDatausingDataProvider")
+//	public void createPetwithDataProvider(int petId, int cId, String cName, String Name, String p1, String p2, String p3, int tId, String tName, int t1_Id, String t1_Name, String Status ) {
+//		
+//		Category c = new Category(cId,cName);
+//		Tags t = new Tags(tId,tName);
+//		Tags t1 = new Tags(t1_Id, t1_Name);
+//		String[] ph = new String[] {p1,p2,p3}; //Tag is giving an error ask aman how to resolve
+//		Tags[] tg = new Tags[] {t,t1};
+//		Pet pt = new Pet(petId,c,Name,ph,tg,Status);
+//		
+//		request = RestAssured.given().log().all().contentType(ContentType.JSON).body(pt);
+//		request.log().all();
+//		
+//		Response res = request.post("/pet");
+//		res.then().log().all();
+//		
+//		
+//	}
 //	
-//  @Test(priority=1)
-//  public void CreatePet() {
+  @Test(priority=1)
+  public void CreatePet() {
+	  
+	  String petInfo = "{\n" + 
+	  		"  \"id\": 101,\n" + 
+	  		"  \"category\": {\n" + 
+	  		"    \"id\": 0,\n" + 
+	  		"    \"name\": \"string\"\n" + 
+	  		"  },\n" + 
+	  		"  \"name\": \"doggie\",\n" + 
+	  		"  \"photoUrls\": [\n" + 
+	  		"    \"string\"\n" + 
+	  		"  ],\n" + 
+	  		"  \"tags\": [\n" + 
+	  		"    {\n" + 
+	  		"      \"id\": 1,\n" + 
+	  		"      \"name\": \"Smoky1\"\n" + 
+	  		"    },\n" + 
+	  		"\n" + 
+	  		"{\n" + 
+	  		"      \"id\": 2,\n" + 
+	  		"      \"name\": \"Smoky2\"\n" + 
+	  		"    },\n" + 
+	  		"\n" + 
+	  		"{\n" + 
+	  		"      \"id\": 3,\n" + 
+	  		"      \"name\": \"Smoky3\"\n" + 
+	  		"    },\n" + 
+	  		"\n" + 
+	  		"{\n" + 
+	  		"      \"id\": 4,\n" + 
+	  		"      \"name\": \"Smoky4\"\n" + 
+	  		"    }\n" + 
+	  		"  ],\n" + 
+	  		"  \"status\": \"available\"\n" + 
+	  		"}";
+	  
+	  
+	  request = RestAssured.given().contentType(ContentType.JSON);
+ 
+	  Response res = request.body(petInfo).post("/pet");
+	  
+	  res.then().log().all();
+	  res.then().log().body();
+	  res.then().log().headers();
+	  
+	  //res.prettyPrint();
+	  
+	  
+	  //Assertions using hamcrest
+	  
+	  //res.then().body("id", greaterThan(100));
+	  
+	  //res.then().body("id", Matchers.is(101));
+	  
+	  res.then().body("tags.id", hasItems(1,2,3,4));
+	  
+	  res.then().body("id", any(Integer.class));
+	  
+	  res.then().body("tags.findAll {it.id>100}.name", hasItem("Smoky"));
+	  
+	  
+//	  //Assertions using testng
 //	  
-//	  String petInfo = "{\n" + 
-//	  		"  \"id\": 101,\n" + 
-//	  		"  \"category\": {\n" + 
-//	  		"    \"id\": 0,\n" + 
-//	  		"    \"name\": \"string\"\n" + 
-//	  		"  },\n" + 
-//	  		"  \"name\": \"doggie\",\n" + 
-//	  		"  \"photoUrls\": [\n" + 
-//	  		"    \"string\"\n" + 
-//	  		"  ],\n" + 
-//	  		"  \"tags\": [\n" + 
-//	  		"    {\n" + 
-//	  		"      \"id\": 1,\n" + 
-//	  		"      \"name\": \"Smoky1\"\n" + 
-//	  		"    },\n" + 
-//	  		"\n" + 
-//	  		"{\n" + 
-//	  		"      \"id\": 2,\n" + 
-//	  		"      \"name\": \"Smoky2\"\n" + 
-//	  		"    },\n" + 
-//	  		"\n" + 
-//	  		"{\n" + 
-//	  		"      \"id\": 3,\n" + 
-//	  		"      \"name\": \"Smoky3\"\n" + 
-//	  		"    },\n" + 
-//	  		"\n" + 
-//	  		"{\n" + 
-//	  		"      \"id\": 4,\n" + 
-//	  		"      \"name\": \"Smoky4\"\n" + 
-//	  		"    }\n" + 
-//	  		"  ],\n" + 
-//	  		"  \"status\": \"available\"\n" + 
-//	  		"}";
-//	  
-//	  
-////	  request = RestAssured.given().contentType(ContentType.JSON);
-////	  
-////	  Response res = request.body(petInfo).post("/pet");
-//	  
-////	  res.then().log().all();
-////	  res.then().log().body();
-////	  res.then().log().headers();
-//	  
-//	  //res.prettyPrint();
-//	  
-//	  
-//	  //Assertions using hamcrest
-//	  
-//	  //res.then().body("id", greaterThan(100));
-//	  
-//	  //res.then().body("id", Matchers.is(101));
-////	  
-////	  res.then().body("tags.id", hasItems(1,2,3,4));
-////	  
-////	  res.then().body("id", any(Integer.class));
-////	  
-////	  res.then().body("tags.findAll {it.id>100}.name", hasItem("Smoky"));
-//	  
-//	  
-////	  //Assertions using testng
-////	  
-////	  Assert.assertEquals(res.jsonPath().getInt("id"), 101);
-////	  
-////	  Assert.assertEquals(res.getStatusCode(), 200);
-////	  //Assert.assertTrue(res.getBody().asString().contains("puppy"));
-////	  
-////	  //Getting headers
-////	  
-////	  System.out.println(res.getHeader("Content-Type"));
-////	  
-////	  Headers Test = res.getHeaders();	 
-////	  
-////	  for(Header i : Test)
-////	  {
-////		  System.out.println(i.getName() + "-----" + i.getValue());
-////	  }
-////	 
-////	  //Deserialization
-////	  
-////	 Pet p = res.getBody().as(Pet.class);
-////	 
-////	 
-////	 System.out.println(p.getName());
-////	 
-////	 //Performance testing by getting the response time
-////	 
-////	 res.then().time(greaterThan(2000L));
-////	 
-////	 System.out.println(res.getTime());
-////	 System.out.println(res.getTimeIn(TimeUnit.SECONDS));
+	  Assert.assertEquals(res.jsonPath().getInt("id"), 101);
+	  
+	  Assert.assertEquals(res.getStatusCode(), 200);
+	  //Assert.assertTrue(res.getBody().asString().contains("puppy"));
+	  
+	  //Getting headers
+	  
+	  System.out.println(res.getHeader("Content-Type"));
+	  
+	  Headers Test = res.getHeaders();	 
+	  
+	  for(Header i : Test)
+	  {
+		  System.out.println(i.getName() + "-----" + i.getValue());
+	  }
+	 
+	  //Deserialization
+	  
+	 Pet p = res.getBody().as(Pet.class);
+	 
+	 
+	 System.out.println(p.getName());
+	 
+	 //Performance testing by getting the response time
+//	 
+//	 res.then().time(greaterThan(2000L));
+//	 
+//	 System.out.println(res.getTime());
+//	 System.out.println(res.getTimeIn(TimeUnit.SECONDS));
 //	 
 //	 Category cat = new Category(4, "Farman");
 //	 Tags T1 = new Tags(5, "Farman45");
@@ -172,9 +172,9 @@ public class restAssuredclass {
 //	 Response res = request.body(PCL).post("/pet");
 //	 
 //	 res.then().log().all();
-//	 
-//	   
-//  }
+	 
+	   
+  }
 //  
 ////	
 ////  @Test(priority=2)
