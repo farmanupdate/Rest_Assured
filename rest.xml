@@ -3,6 +3,8 @@
   <test name="Test">
     <classes>
       <class name="restassured.restAssuredclass"/>
+      <class name="restassured.DataProviderClass"/>
+      <class name="restassured.uploadTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
