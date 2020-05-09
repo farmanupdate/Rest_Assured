@@ -4,7 +4,7 @@
     <classes>
       <class name="restassured.restAssuredclass"/>
       <class name="restassured.DataProviderClass"/>
-      <class name="restassured.uploadTest"/>
+      <class name="restassured.UploadClass"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
